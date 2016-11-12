@@ -11,9 +11,23 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var openRecent: NSMenuItem?
+    @IBOutlet weak var saveFile: NSMenuItem?
     
     var vc: ViewController? = nil
+    let applicationMenus: ApplicationMenus? = nil
+    var pathOfFile: String? = nil
 
+    @IBAction func newFile(_ sender: AnyObject) {
+        let sampleData = Data(count: 8192)
+        let tileData = TileData(data: sampleData)
+        tileData.type = .nes
+        vc?.tileData = tileData
+        vc?.tileDataType = .nes
+        vc?.update()
+        
+        self.pathOfFile = nil
+    }
+    
     @IBAction func openDirectory(_ sender: AnyObject) {
         let myFileDialog: NSOpenPanel = NSOpenPanel()
         myFileDialog.runModal()
@@ -21,20 +35,32 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.loadFileWith(path: path)
             _ = self.recentFiles(addPath: path)
             addFilePathToRecentFiles(path: path)
+            self.pathOfFile = path
         }
     }
     
     @IBAction func saveFile(_ sender: AnyObject) {
-        guard let vc = vc else {
-            return
+        if let pathToSaveTo = pathOfFile {
+            saveFileTo(path: pathToSaveTo)
+        } else {
+            NSLog("Cannot save file because path is nil")
         }
-        if let data = vc.tileData?.processedData {
-            _ = FileLoader.saveEditedFileTo(path: "/Users/yello/Documents/Dropbox/NES/src/git/demo_saved.chr", data: data)
+    }
+    @IBAction func saveFileAs(_ sender: AnyObject) {
+        let panel = NSSavePanel()
+        panel.runModal()
+        if let pathToSaveFileAs = panel.url?.path {
+            saveFileTo(path: pathToSaveFileAs)
+            self.pathOfFile = pathToSaveFileAs
+            addFilePathToRecentFiles(path: pathToSaveFileAs)
+        } else {
+            NSLog("Could not get path to save")
         }
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         vc = NSApplication.shared().mainWindow?.contentViewController as? ViewController
+        
         let sampleData = Data(count: 8192)
         let tileData = TileData(data: sampleData)
         tileData.type = .nes
@@ -52,6 +78,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 addFilePathToRecentFiles(path: filePath)
             }
         }
+    }
+    
+    override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+        if menuItem == saveFile {
+            if pathOfFile == nil {
+                return false
+            }
+        }
+        return true
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -82,6 +117,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func loadRecentItemSelected(sender: NSMenuItem) {
         let filePathFromTitle = sender.title
         self.loadFileWith(path: filePathFromTitle)
+        self.pathOfFile = filePathFromTitle
     }
     
     func loadFileWith(path: String) {
@@ -102,6 +138,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         } catch {
             
+        }
+    }
+    func saveFileTo(path: String) {
+        guard let vc = vc else {
+            return
+        }
+        if let data = vc.tileData?.processedData {
+            _ = FileLoader.saveEditedFileTo(path: path, data: data)
         }
     }
 }
