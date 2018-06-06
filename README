@@ -1,0 +1,45 @@
+
+
+# TileEditorPro
+TileEditorPro allows for editing CHR data, ROM files, and Palette data on macOS. At the moment TileEditorPro only supports the Nintendo (NES) console.
+
+This project was written in Swift 4 and depends on the TileEditor.framework which allows for modularization of code.
+
+
+## Common Questions
+### What is CHR data?
+CHR data is the format which the console understands to display.
+
+### What is a ROM file?
+A ROM file is the game which is either downloaded from the internet or ripped from a cartridge you own.
+
+Do not ask me where you may download a ROM file.
+
+### What is Palette data?
+Palette data is the binary format for colors which the console understands. By exporting the palette data allows you as the game developer to include the palette data into your game during compile time.
+
+### Which license is the program under?
+MIT License
+
+Copyright (c) 2018 yellokrow
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+### How can I find the latest update?
+http://www.yellokrow.com
